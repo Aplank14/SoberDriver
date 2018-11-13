@@ -136,4 +136,6 @@ app.post('/dropoff/:id', (req, res) =>{
     res.status(200).send();
 });
 
-app.listen(3000, () => console.log("I'm listening on 3000"));
+app.listen(process.env.PORT || 3000, () => {
+    const port = server.address().port; console.log("I'm listening on {port}")
+});
