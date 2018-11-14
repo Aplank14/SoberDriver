@@ -15,6 +15,8 @@
         .then(res => {
             if (res.ok) {
                 window.location.href = "/success.html";
+            } else {
+                window.location.href = "/error.html";
             }
         });
     }

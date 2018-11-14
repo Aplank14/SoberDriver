@@ -13,15 +13,22 @@ for(let i=0; i<20; i++){
     token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
 }
 
+console.log(calcPriority(2557));
+console.log(calcPriority(2558));
+console.log(calcPriority(2500));
+console.log(calcPriority(2472));
+
 function calcPriority(bond){
-    switch (bond) {
-        
-        case bond>2563:
-                
-            break;
-        default:
-            break;
-    }
+    let priority;
+    if(bond===0) priority=0;
+    else if (bond>=2563) priority=2500; 
+    else if (bond>=2541) priority=2541;
+    else if (bond>=2500) priority=2500;
+    else if (bond>=2490) priority=2490;
+    else if (bond>=2472) priority=2472;
+    else if (bond<2472) priority=bond;
+    else priority = 5000;
+    return priority;
 }
 
 function checkAuth(auth){
@@ -76,8 +83,9 @@ app.post('/new-request', (req,res) =>{
     let phone = req.body.phone;
     let priority = parseInt(name.replace(/'/g, ""));
     if(isNaN(priority)){
-        priority=10000;
+        priority=5000;
     }
+    priority = calcPriority(priority);
     let newRequest = {
         id : count,
         name : name,
@@ -88,7 +96,7 @@ app.post('/new-request', (req,res) =>{
         phone : phone
     }
     count++;
-    if(priority!==10000){
+    if(priority!==5000){
         let i;
         for(i=0; i<requests.length; i++){
             if(requests[i].priority>priority){
