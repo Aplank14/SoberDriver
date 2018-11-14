@@ -13,6 +13,17 @@ for(let i=0; i<20; i++){
     token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
 }
 
+function calcPriority(bond){
+    switch (bond) {
+        
+        case bond>2563:
+                
+            break;
+        default:
+            break;
+    }
+}
+
 function checkAuth(auth){
     if(auth===token && token!==""){
         return true;
@@ -136,6 +147,7 @@ app.post('/dropoff/:id', (req, res) =>{
     res.status(200).send();
 });
 
-const server = app.listen(process.env.PORT || 3000, () => {
-    const port = server.address().port; console.log("I'm listening on {port}")
+const server = app.listen(process.env.PORT || 8080, () => {
+    const port = server.address().port;
+    console.log(`I'm listening on ${port}`);
 });
