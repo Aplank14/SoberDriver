@@ -13,11 +13,6 @@ for(let i=0; i<20; i++){
     token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
 }
 
-console.log(calcPriority(2557));
-console.log(calcPriority(2558));
-console.log(calcPriority(2500));
-console.log(calcPriority(2472));
-
 function calcPriority(bond){
     let priority;
     if(bond===0) priority=0;
