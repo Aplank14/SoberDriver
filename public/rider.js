@@ -16,6 +16,7 @@
         let passengers = document.getElementById('passengers');
         passengers.innerHTML = data.passengers;
         let number = document.getElementById('number');
+        number.href = "tel:" + data.phone;
         number.innerHTML = data.phone;
     }
 }())

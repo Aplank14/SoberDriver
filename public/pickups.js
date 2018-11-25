@@ -29,15 +29,17 @@
         riders.innerHTML = item.passengers;
         let link = document.createElement('a');
         link.href=`rider/${item.id}`;
+        let pickupData = document.createElement('td');
         let button = document.createElement('button');
         button.className = "btn btn-info"
         button.innerHTML = "Pickup";
         link.appendChild(button);
+        pickupData.appendChild(link);
         row.appendChild(name);
         row.appendChild(location);
         row.appendChild(destination);
         row.appendChild(riders);
-        row.appendChild(link);
+        row.appendChild(pickupData);
         table.appendChild(row);
     }
 }
