@@ -23,8 +23,8 @@
         name.innerHTML = item.name;
         let location = document.createElement('td');
         location.innerHTML = item.location;        
-        let destination = document.createElement('td');
-        destination.innerHTML = item.destination;
+        //let destination = document.createElement('td');
+        //destination.innerHTML = item.destination;
         let riders = document.createElement('td');
         riders.innerHTML = item.passengers;
         let link = document.createElement('a');
@@ -37,7 +37,7 @@
         pickupData.appendChild(link);
         row.appendChild(name);
         row.appendChild(location);
-        row.appendChild(destination);
+        //row.appendChild(destination);
         row.appendChild(riders);
         row.appendChild(pickupData);
         table.appendChild(row);

@@ -11,8 +11,8 @@
     function showData(data) {
         let name = document.getElementById('name');
         name.innerHTML = data.name;
-        let trip = document.getElementById('trip');
-        trip.innerHTML = data.location + " -> " + data.destination;
+        let location = document.getElementById('trip');
+        location.innerHTML = data.location;
         let passengers = document.getElementById('passengers');
         passengers.innerHTML = data.passengers;
         let number = document.getElementById('number');

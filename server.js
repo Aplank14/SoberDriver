@@ -16,14 +16,13 @@ for(let i=0; i<20; i++){
 function calcPriority(bond){
     let priority;
     if(bond===0) priority=0;
-    else if (bond>=2575) priority=2575; 
-    else if (bond>=2563) priority=2563; 
-    else if (bond>=2541) priority=2541;
-    else if (bond>=2500) priority=2500;
-    else if (bond>=2490) priority=2490;
-    else if (bond>=2472) priority=2472;
-    else if (bond<2472) priority=bond;
-    else priority = 5000;
+    else if (bond>=2575 && bond<=2594) priority=2575; 
+    else if (bond>=2563 && bond<=2575) priority=2563; 
+    else if (bond>=2541 && bond<=2563) priority=2541;
+    else if (bond>=2500 && bond<=2541) priority=2500;
+    else if (bond>=2490 && bond<=2500) priority=2490;
+    else if (bond>=2472 && bond<=2490) priority=2472;
+    else priority=bond;
     return priority;
 }
 
@@ -74,24 +73,24 @@ app.get('/requests', (req,res) =>{
 app.post('/new-request', (req,res) =>{
     let name = req.body.name;
     let location = req.body.location;
-    let destination = req.body.destination;
     let passengers = req.body.passengers;
     let phone = req.body.phone;
     let priority = parseInt(name.replace(/'/g, ""));
     if(isNaN(priority)){
         priority=5000;
+    } else {
+        priority = calcPriority(priority);
     }
-    priority = calcPriority(priority);
     let newRequest = {
         id : count,
         name : name,
         priority : priority,
         location : location,
-        destination : destination,
         passengers : passengers,
         phone : phone
     }
     count++;
+    let index;
     if(priority!==5000){
         let i;
         for(i=0; i<requests.length; i++){
@@ -100,10 +99,15 @@ app.post('/new-request', (req,res) =>{
             }
         }
         requests.splice(i, 0, newRequest);
+        index = i;
     } else {
         requests.push(newRequest);
+        index == count;
     }
-    res.sendStatus(200);
+    if(count==1){
+        //PUSH NOTIFICATION HERE
+    }
+    res.status(200).send({message : count-1});
 });
 
 app.get('/rider/:id', (req, res)=>{
