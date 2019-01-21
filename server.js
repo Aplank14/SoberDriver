@@ -107,7 +107,7 @@ app.post('/new-request', (req,res) =>{
     if(count==1){
         //PUSH NOTIFICATION HERE
     }
-    res.status(200).send({message : count-1});
+    res.status(200).send({message : count});
 });
 
 app.get('/rider/:id', (req, res)=>{

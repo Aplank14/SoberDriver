@@ -2,6 +2,7 @@
     const form = document.getElementById('new-request-form');
     form.onsubmit = (e) => {
         e.preventDefault();
+        let phone = document.getElementById("phone").value;
         const formData = new FormData(form);
         const data = new URLSearchParams();
         for (const pair of formData) {
@@ -9,12 +10,17 @@
         }
         form.reset();
         fetch("/new-request", {
-            method: "POST",
-            body: data,
+            method: 'POST',
+            body: data
         })
         .then(res => {
             if (res.ok) {
-                window.location.href = "/success.html";
+                res.json().then(data => {
+                    document.getElementById("rider-phone").href += phone;
+                    document.getElementById("rider-phone").innerHTML = phone;
+                    document.getElementById("rider-position").innerHTML = data.message;
+                    $('#modal').modal('show')
+                });
             } else {
                 window.location.href = "/error.html";
             }

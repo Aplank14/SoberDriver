@@ -10,6 +10,24 @@
 </head>
 
 <body class="bg-dark">
+    <!--Confirmation Dialog Modal-->
+    <div id="confirmation" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Success</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>The driver will call <a id="rider-phone" href="tel:" id="number"></a> when they are on the way.</p>
+                    <p>Your place in line: <span id="rider-position"></span>.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Input Form-->
     <div class="container-fluid text-white">
         <form autocomplete="off" class="p-2" id="new-request-form">
             <h1 class="text-center pt-2">Request a Ride</h1>
@@ -21,17 +39,15 @@
                 <label for="location">Location</label>
                 <input type="text" class="form-control" name="location" required>
             </div>
-            <!--<div class="form-group">
-                <label for="destination">Destination</label>
-                <input type="text" class="form-control" name="destination" required>
-            </div>-->
+
             <div class="form-group">
                 <label for="passengers">Number of Passengers</label>
                 <input type="number" class="form-control" name="passengers" min="1" max="4" required>
             </div>
             <div class="form-group">
                 <label for="phone">Phone</label>
-                <input type="tel" class="form-control" name="phone" placeholder="123-456-7890" pattern="([0-9]{3}-[0-9]{3}-[0-9]{4})||([0-9]{10})" required>
+                <input id="phone" type="tel" class="form-control" name="phone" placeholder="123-456-7890" pattern="([0-9]{3}-[0-9]{3}-[0-9]{4})||([0-9]{10})"
+                    required>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-info w-100">Submit</button>
