@@ -99,10 +99,10 @@ app.post('/new-request', (req,res) =>{
             }
         }
         requests.splice(i, 0, newRequest);
-        index = i;
+        index = i + 1;
     } else {
         requests.push(newRequest);
-        index == requests.length;
+        index = requests.length + 1;
     }
     if(requests.length==1){
         //PUSH NOTIFICATION HERE
