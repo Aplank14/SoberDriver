@@ -8,16 +8,22 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/rider', express.static('public'));
 
+/*Global Variables*/
 const credentials = {
-    loginUsername: process.env.login_username,
-    loginPassword: process.env.login_password
+    loginUsername: process.env.LOGIN_USERNAME,
+    loginPassword: process.env.LOGIN_PASSWORD
 };
-
 let token = "";
+let requests = [];
+let currentRiders = [];
+let count = 0;
+
+/*Set Server Authentication Token*/
 for(let i=0; i<20; i++){
     token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
 }
 
+/*Helper Functions*/
 function calcPriority(bond){
     let priority;
     if(bond===0) priority=0;
@@ -39,13 +45,10 @@ function checkAuth(auth){
     }
 }
 
-let requests = [];
-let currentRiders = [];
-let count = 0;
-
+/*Reset all server variables*/
 app.post('/reset', (req,res) =>{
     let auth = req.headers.authorization;
-    if (auth==="master-reset")
+    if (auth===process.env.MASTER_RESET)
     token = "";
     for(let i=0; i<20; i++){
         token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
@@ -56,6 +59,7 @@ app.post('/reset', (req,res) =>{
     res.status(200).send();
 })
 
+/*Routes*/
 app.get('/', (req, res) => {
     res.sendFile('/public.index.html', {root: path.join(__dirname)});    
 })
@@ -66,6 +70,23 @@ app.get('/pickups', (req, res) => {
     res.sendFile('/public/pickups.html', {root: path.join(__dirname)});    
 })
 
+app.get('/rider/:id', (req, res)=>{
+    res.sendFile('/public/rider.html', {root: path.join(__dirname)});
+});
+
+/*Authenticate the user*/
+app.post('/login', (req, res) => {
+    let username= req.body.username + "";
+    let password= req.body.password + "";
+    if(username === credentials.loginUsername && password === credentials.loginPassword) {
+        res.setHeader('Set-Authorization', token);
+        res.status(200).send({message:'Authentication successful '});
+    } else {
+        res.status(401).send({message: 'unauthorized'}); 
+    }
+});
+
+/*Return all requests*/
 app.get('/requests', (req,res) =>{
     let auth = req.headers.authorization;
     if (!checkAuth(auth)){
@@ -75,6 +96,7 @@ app.get('/requests', (req,res) =>{
     res.status(200).send(requests);
 });
 
+/*Insert a new request*/
 app.post('/new-request', (req,res) =>{
     let name = req.body.name;
     let location = req.body.location;
@@ -97,14 +119,14 @@ app.post('/new-request', (req,res) =>{
     count++;
     let index;
     if(priority!==5000){
-        let i;
-        for(i=0; i<requests.length; i++){
+        for(let i=0; i<requests.length; i++){
             if(requests[i].priority>priority){
+                index = i;
                 break;    
             }
         }
-        requests.splice(i, 0, newRequest);
-        index = i + 1;
+        requests.splice(index, 0, newRequest);
+        index++;
     } else {
         requests.push(newRequest);
         index = requests.length;
@@ -115,10 +137,7 @@ app.post('/new-request', (req,res) =>{
     res.status(200).send({message : index});
 });
 
-app.get('/rider/:id', (req, res)=>{
-    res.sendFile('/public/rider.html', {root: path.join(__dirname)});
-});
-
+/*Remove the rider from requests and add them to current riders*/
 app.get('/pickup/:id', (req, res) =>{
     let auth = req.headers.authorization;
     if (!checkAuth(auth)){
@@ -131,25 +150,7 @@ app.get('/pickup/:id', (req, res) =>{
     res.status(200).send(currentRiders.find(obj => obj.id == req.params.id));
 });
 
-app.post('/login', (req, res) => {
-    let username= req.body.username + "";
-    if(username.length<=1 || username.length>=16){
-        res.status(401).send({message: 'unauthorized'}); 
-        return;
-    }
-    let password= req.body.password + "";
-    if(password.length<=1 || password.length>=20){
-        res.status(401).send({message: 'unauthorized'});
-        return; 
-    }
-    if(username === credentials.loginUsername && password === credentials.loginPassword) {
-        res.setHeader('Set-Authorization', token);
-        res.status(200).send({message:'Authentication successful '});
-    } else {
-        res.status(401).send({message: 'unauthorized'}); 
-    }
-});
-
+/*Remove the rider from current riders*/
 app.post('/dropoff/:id', (req, res) =>{
     let auth = req.headers.authorization;
     if (!checkAuth(auth)){
@@ -157,7 +158,7 @@ app.post('/dropoff/:id', (req, res) =>{
         return;
     }
     currentRiders.splice(currentRiders.findIndex(obj => obj.id == req.params.id),1);
-    res.status(200).send();
+    res.sendStatus(200);
 });
 
 const server = app.listen(process.env.PORT || 8080, () => {
