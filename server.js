@@ -102,12 +102,12 @@ app.post('/new-request', (req,res) =>{
         index = i;
     } else {
         requests.push(newRequest);
-        index == count;
+        index == requests.length;
     }
-    if(count==1){
+    if(requests.length==1){
         //PUSH NOTIFICATION HERE
     }
-    res.status(200).send({message : count});
+    res.status(200).send({message : index});
 });
 
 app.get('/rider/:id', (req, res)=>{
