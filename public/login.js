@@ -21,7 +21,7 @@
         })
         .then(data => {
             if (data) {
-                window.location.href = "/pickups.html";
+                window.location.href = "/pickups";
             }
         });
     }

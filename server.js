@@ -8,6 +8,11 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/rider', express.static('public'));
 
+const credentials = {
+    loginUsername: process.env.username,
+    loginPassword: process.env.password
+};
+
 let token = "";
 for(let i=0; i<20; i++){
     token += String.fromCharCode(Math.floor(Math.random() * 26)+65); 
@@ -102,7 +107,7 @@ app.post('/new-request', (req,res) =>{
         index = i + 1;
     } else {
         requests.push(newRequest);
-        index = requests.length + 1;
+        index = requests.length;
     }
     if(requests.length==1){
         //PUSH NOTIFICATION HERE
@@ -137,7 +142,7 @@ app.post('/login', (req, res) => {
         res.status(401).send({message: 'unauthorized'});
         return; 
     }
-    if(username === 'phi' && password === 'delts') {
+    if(username === credentials.loginUsername && password === credentials.loginPassword) {
         res.setHeader('Set-Authorization', token);
         res.status(200).send({message:'Authentication successful '});
     } else {
