@@ -19,7 +19,7 @@
                     document.getElementById("rider-phone").href += phone;
                     document.getElementById("rider-phone").innerHTML = phone;
                     document.getElementById("rider-position").innerHTML = data.message;
-                    $('#modal').modal('show')
+                    $('#confirmation').modal('show')
                 });
             } else {
                 window.location.href = "/error.html";
