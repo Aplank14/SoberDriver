@@ -9,8 +9,8 @@ app.use(express.static('public'));
 app.use('/rider', express.static('public'));
 
 const credentials = {
-    loginUsername: process.env.username,
-    loginPassword: process.env.password
+    loginUsername: process.env.login_username,
+    loginPassword: process.env.login_password
 };
 
 let token = "";
