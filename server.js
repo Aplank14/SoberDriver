@@ -16,7 +16,8 @@ for(let i=0; i<20; i++){
 function calcPriority(bond){
     let priority;
     if(bond===0) priority=0;
-    else if (bond>=2563) priority=2500; 
+    else if (bond>=2575) priority=2575; 
+    else if (bond>=2563) priority=2563; 
     else if (bond>=2541) priority=2541;
     else if (bond>=2500) priority=2500;
     else if (bond>=2490) priority=2490;
